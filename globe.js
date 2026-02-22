@@ -258,12 +258,23 @@
         if (tooltip) tooltip.classList.remove('visible');
     });
 
-    // Animation loop
+    // Animation loop with visibility check
     let frameCount = 0;
+    let globeVisible = true;
+
+    // Only render the globe when it's visible on screen
+    const observer = new IntersectionObserver((entries) => {
+        globeVisible = entries[0].isIntersecting;
+    }, { threshold: 0.01 });
+    observer.observe(container);
+
     function animate() {
         requestAnimationFrame(animate);
 
-        // Throttle to ~30fps on mobile
+        // Skip rendering entirely when globe is off-screen
+        if (!globeVisible) return;
+
+        // Throttle to ~30fps on Android
         if (isAndroid) {
             frameCount++;
             if (frameCount % 2 !== 0) return;

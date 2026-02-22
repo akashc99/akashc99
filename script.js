@@ -43,7 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const drops = new Array(columns).fill(1);
 
     if (!isAndroid) {
-        function drawMatrix() {
+        let lastMatrixDraw = 0;
+        function drawMatrix(timestamp) {
+            requestAnimationFrame(drawMatrix);
+            // Throttle to ~12fps (enough for matrix rain effect)
+            if (timestamp - lastMatrixDraw < 83) return;
+            lastMatrixDraw = timestamp;
+
             ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -61,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        setInterval(drawMatrix, 50);
+        requestAnimationFrame(drawMatrix);
     } else {
         // On mobile, draw a subtle static background instead
         canvas.style.background = 'radial-gradient(ellipse at center, rgba(230,57,70,0.03) 0%, transparent 70%)';
@@ -593,11 +599,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return svg;
     }
 
-    document.addEventListener('click', (e) => {
-        // Disable click bugs on mobile for performance
-        if (isAndroid) return;
+    let activeBugCount = 0;
+    const MAX_BUGS = 15;
 
-        const bugCount = Math.floor(Math.random() * 4) + 5;
+    document.addEventListener('click', (e) => {
+        // Disable click bugs on Android for performance
+        if (isAndroid) return;
+        // Cap concurrent bugs to prevent lag
+        if (activeBugCount >= MAX_BUGS) return;
+
+        const bugCount = Math.floor(Math.random() * 3) + 2; // 2-4 bugs
 
         for (let i = 0; i < bugCount; i++) {
             const wrapper = document.createElement('div');
@@ -611,10 +622,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 left: ${e.clientX}px;
                 top: ${e.clientY}px;
                 transform: translate(-50%, -50%);
-                filter: drop-shadow(0 0 4px rgba(230,57,70,0.5));
+                filter: none;
             `;
             wrapper.appendChild(bug);
             document.body.appendChild(wrapper);
+            activeBugCount++;
 
             // Random flight direction
             const angle = Math.random() * Math.PI * 2;
@@ -646,6 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     requestAnimationFrame(animateBugFly);
                 } else {
                     wrapper.remove();
+                    activeBugCount--;
                 }
             }
             // Stagger start for natural feel
