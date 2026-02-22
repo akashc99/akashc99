@@ -8,18 +8,21 @@
     const container = document.getElementById('globe-container');
     if (!container) return;
 
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.z = 2.8;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
     // Globe wireframe
-    const globeGeometry = new THREE.SphereGeometry(1, 32, 32);
+    const globeSegments = isMobile ? 20 : 32;
+    const globeGeometry = new THREE.SphereGeometry(1, globeSegments, globeSegments);
     const globeMaterial = new THREE.MeshBasicMaterial({
         color: 0xe63946,
         wireframe: true,
@@ -29,27 +32,30 @@
     const globe = new THREE.Mesh(globeGeometry, globeMaterial);
     scene.add(globe);
 
-    // Inner glow sphere
-    const innerGeometry = new THREE.SphereGeometry(0.98, 24, 24);
-    const innerMaterial = new THREE.MeshBasicMaterial({
-        color: 0xe63946,
-        transparent: true,
-        opacity: 0.03,
-        side: THREE.BackSide
-    });
-    const innerGlow = new THREE.Mesh(innerGeometry, innerMaterial);
-    scene.add(innerGlow);
+    // Inner glow sphere (desktop only)
+    let innerGlow, halo;
+    if (!isMobile) {
+        const innerGeometry = new THREE.SphereGeometry(0.98, 24, 24);
+        const innerMaterial = new THREE.MeshBasicMaterial({
+            color: 0xe63946,
+            transparent: true,
+            opacity: 0.03,
+            side: THREE.BackSide
+        });
+        innerGlow = new THREE.Mesh(innerGeometry, innerMaterial);
+        scene.add(innerGlow);
 
-    // Atmospheric halo glow
-    const haloGeometry = new THREE.SphereGeometry(1.15, 32, 32);
-    const haloMaterial = new THREE.MeshBasicMaterial({
-        color: 0xe63946,
-        transparent: true,
-        opacity: 0.04,
-        side: THREE.BackSide
-    });
-    const halo = new THREE.Mesh(haloGeometry, haloMaterial);
-    scene.add(halo);
+        // Atmospheric halo glow
+        const haloGeometry = new THREE.SphereGeometry(1.15, 32, 32);
+        const haloMaterial = new THREE.MeshBasicMaterial({
+            color: 0xe63946,
+            transparent: true,
+            opacity: 0.04,
+            side: THREE.BackSide
+        });
+        halo = new THREE.Mesh(haloGeometry, haloMaterial);
+        scene.add(halo);
+    }
 
     // Equator ring
     const equatorGeometry = new THREE.RingGeometry(1.005, 1.01, 64);
@@ -71,7 +77,7 @@
     scene.add(scanRing);
 
     // ---- ORBITING PARTICLE FIELD ----
-    const particleCount = 200;
+    const particleCount = isMobile ? 50 : 200;
     const particlesGeometry = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
 
@@ -174,37 +180,39 @@
 
     const arcs = [];
 
-    connections.forEach(([a, b]) => {
-        const posA = latLngToVector3(targets[a].lat, targets[a].lng, 1.02);
-        const posB = latLngToVector3(targets[b].lat, targets[b].lng, 1.02);
-        const mid = new THREE.Vector3().addVectors(posA, posB).multiplyScalar(0.5);
-        mid.normalize().multiplyScalar(1.35);
+    if (!isMobile) {
+        connections.forEach(([a, b]) => {
+            const posA = latLngToVector3(targets[a].lat, targets[a].lng, 1.02);
+            const posB = latLngToVector3(targets[b].lat, targets[b].lng, 1.02);
+            const mid = new THREE.Vector3().addVectors(posA, posB).multiplyScalar(0.5);
+            mid.normalize().multiplyScalar(1.35);
 
-        const curve = new THREE.QuadraticBezierCurve3(posA, mid, posB);
-        const points = curve.getPoints(50);
+            const curve = new THREE.QuadraticBezierCurve3(posA, mid, posB);
+            const points = curve.getPoints(50);
 
-        // Arc line
-        const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
-        const lineMaterial = new THREE.LineBasicMaterial({
-            color: 0xe63946, transparent: true, opacity: 0.08
+            // Arc line
+            const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0xe63946, transparent: true, opacity: 0.08
+            });
+            const line = new THREE.Line(lineGeometry, lineMaterial);
+            scene.add(line);
+
+            // Traveling data pulse dot
+            const pulseGeom = new THREE.SphereGeometry(0.012, 6, 6);
+            const pulseMat = new THREE.MeshBasicMaterial({
+                color: 0xff6b6b, transparent: true, opacity: 0.9
+            });
+            const pulse = new THREE.Mesh(pulseGeom, pulseMat);
+            scene.add(pulse);
+
+            arcs.push({
+                curve, pulse, line,
+                speed: 0.15 + Math.random() * 0.2,
+                progress: Math.random()
+            });
         });
-        const line = new THREE.Line(lineGeometry, lineMaterial);
-        scene.add(line);
-
-        // Traveling data pulse dot
-        const pulseGeom = new THREE.SphereGeometry(0.012, 6, 6);
-        const pulseMat = new THREE.MeshBasicMaterial({
-            color: 0xff6b6b, transparent: true, opacity: 0.9
-        });
-        const pulse = new THREE.Mesh(pulseGeom, pulseMat);
-        scene.add(pulse);
-
-        arcs.push({
-            curve, pulse, line,
-            speed: 0.15 + Math.random() * 0.2,
-            progress: Math.random()
-        });
-    });
+    }
 
     // Mouse and Raycaster
     let targetRotationX = 0;
@@ -264,10 +272,12 @@
         scanRing.rotation.y = globe.rotation.y;
         scanRing.rotation.z += 0.008;
 
-        // Halo breathing
-        const haloScale = 1 + Math.sin(time * 0.5) * 0.02;
-        halo.scale.set(haloScale, haloScale, haloScale);
-        halo.material.opacity = 0.03 + Math.sin(time * 0.8) * 0.015;
+        // Halo breathing (desktop only)
+        if (halo) {
+            const haloScale = 1 + Math.sin(time * 0.5) * 0.02;
+            halo.scale.set(haloScale, haloScale, haloScale);
+            halo.material.opacity = 0.03 + Math.sin(time * 0.8) * 0.015;
+        }
 
         // Mouse-driven rotation
         globe.rotation.x += (targetRotationX - globe.rotation.x * 0.5) * 0.02;
