@@ -3,6 +3,9 @@
 // ============================
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Mobile detection
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+
     // ============================
     // PRELOADER
     // ============================
@@ -38,25 +41,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const columns = Math.floor(canvas.width / fontSize);
     const drops = new Array(columns).fill(1);
 
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (!isMobile) {
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = 'rgba(230, 57, 70, 0.25)';
-        ctx.font = `${fontSize}px monospace`;
+            ctx.fillStyle = 'rgba(230, 57, 70, 0.25)';
+            ctx.font = `${fontSize}px monospace`;
 
-        for (let i = 0; i < drops.length; i++) {
-            const char = charArray[Math.floor(Math.random() * charArray.length)];
-            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+            for (let i = 0; i < drops.length; i++) {
+                const char = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
 
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
             }
-            drops[i]++;
         }
-    }
 
-    setInterval(drawMatrix, 50);
+        setInterval(drawMatrix, 50);
+    } else {
+        // On mobile, draw a subtle static background instead
+        canvas.style.background = 'radial-gradient(ellipse at center, rgba(230,57,70,0.03) 0%, transparent 70%)';
+    }
 
     // ============================
     // FLOATING PARTICLES
@@ -74,7 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         heroSection.prepend(particleContainer);
 
-        for (let i = 0; i < 30; i++) {
+        const particleCount = isMobile ? 8 : 30;
+        for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             const size = Math.random() * 3 + 1;
             const left = Math.random() * 100;
@@ -90,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 left: ${left}%;
                 bottom: -10px;
                 animation: floatUp ${duration}s linear ${delay}s infinite;
-                box-shadow: 0 0 ${size * 2}px rgba(230, 57, 70, 0.3);
+                ${isMobile ? '' : `box-shadow: 0 0 ${size * 2}px rgba(230, 57, 70, 0.3);`}
             `;
             particleContainer.appendChild(particle);
         }
@@ -582,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('click', (e) => {
-        const bugCount = Math.floor(Math.random() * 4) + 5; // 5-8 bugs
+        const bugCount = isMobile ? Math.floor(Math.random() * 2) + 1 : Math.floor(Math.random() * 4) + 5;
 
         for (let i = 0; i < bugCount; i++) {
             const wrapper = document.createElement('div');
