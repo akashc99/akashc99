@@ -8,7 +8,7 @@
     const container = document.getElementById('globe-container');
     if (!container) return;
 
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    const isAndroid = /Android/i.test(navigator.userAgent);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -16,12 +16,12 @@
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isAndroid ? 1.5 : 2));
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
     // Globe wireframe
-    const globeSegments = isMobile ? 20 : 32;
+    const globeSegments = isAndroid ? 20 : 32;
     const globeGeometry = new THREE.SphereGeometry(1, globeSegments, globeSegments);
     const globeMaterial = new THREE.MeshBasicMaterial({
         color: 0xe63946,
@@ -34,7 +34,7 @@
 
     // Inner glow sphere (desktop only)
     let innerGlow, halo;
-    if (!isMobile) {
+    if (!isAndroid) {
         const innerGeometry = new THREE.SphereGeometry(0.98, 24, 24);
         const innerMaterial = new THREE.MeshBasicMaterial({
             color: 0xe63946,
@@ -77,7 +77,7 @@
     scene.add(scanRing);
 
     // ---- ORBITING PARTICLE FIELD ----
-    const particleCount = isMobile ? 50 : 200;
+    const particleCount = isAndroid ? 50 : 200;
     const particlesGeometry = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
 
@@ -180,7 +180,7 @@
 
     const arcs = [];
 
-    if (!isMobile) {
+    if (!isAndroid) {
         connections.forEach(([a, b]) => {
             const posA = latLngToVector3(targets[a].lat, targets[a].lng, 1.02);
             const posB = latLngToVector3(targets[b].lat, targets[b].lng, 1.02);
@@ -259,8 +259,16 @@
     });
 
     // Animation loop
+    let frameCount = 0;
     function animate() {
         requestAnimationFrame(animate);
+
+        // Throttle to ~30fps on mobile
+        if (isAndroid) {
+            frameCount++;
+            if (frameCount % 2 !== 0) return;
+        }
+
         const time = Date.now() * 0.001;
 
         // Slow auto-rotation

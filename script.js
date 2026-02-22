@@ -3,8 +3,9 @@
 // ============================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Mobile detection
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    // Android detection (iOS handles animations fine)
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (isAndroid) document.body.classList.add('android');
 
     // ============================
     // PRELOADER
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const columns = Math.floor(canvas.width / fontSize);
     const drops = new Array(columns).fill(1);
 
-    if (!isMobile) {
+    if (!isAndroid) {
         function drawMatrix() {
             ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -82,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         heroSection.prepend(particleContainer);
 
-        const particleCount = isMobile ? 8 : 30;
+        const particleCount = isAndroid ? 8 : 30;
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             const size = Math.random() * 3 + 1;
@@ -99,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 left: ${left}%;
                 bottom: -10px;
                 animation: floatUp ${duration}s linear ${delay}s infinite;
-                ${isMobile ? '' : `box-shadow: 0 0 ${size * 2}px rgba(230, 57, 70, 0.3);`}
+                ${isAndroid ? '' : `box-shadow: 0 0 ${size * 2}px rgba(230, 57, 70, 0.3);`}
             `;
             particleContainer.appendChild(particle);
         }
@@ -287,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Active nav link based on scroll position
         updateActiveNav();
-    });
+    }, { passive: true });
 
     // Mobile toggle
     navToggle.addEventListener('click', () => {
@@ -413,15 +414,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================
     // PARALLAX EFFECT ON HERO
     // ============================
-    const heroVisual = document.querySelector('.hero-visual');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY < window.innerHeight) {
-            const parallax = window.scrollY * 0.3;
-            if (heroVisual) {
-                heroVisual.style.transform = `translateY(${parallax}px)`;
+    if (!isAndroid) {
+        const heroVisual = document.querySelector('.hero-visual');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY < window.innerHeight) {
+                const parallax = window.scrollY * 0.3;
+                if (heroVisual) {
+                    heroVisual.style.transform = `translateY(${parallax}px)`;
+                }
             }
-        }
-    });
+        }, { passive: true });
+    }
 
     // ============================
     // TERMINAL TYPING EFFECT ON ABOUT
@@ -498,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scrollProgressBar) {
             scrollProgressBar.style.width = scrolled + '%';
         }
-    });
+    }, { passive: true });
 
     // ============================
     // SPOTLIGHT EFFECT ON CARDS
@@ -591,7 +594,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('click', (e) => {
-        const bugCount = isMobile ? Math.floor(Math.random() * 2) + 1 : Math.floor(Math.random() * 4) + 5;
+        // Disable click bugs on mobile for performance
+        if (isAndroid) return;
+
+        const bugCount = Math.floor(Math.random() * 4) + 5;
 
         for (let i = 0; i < bugCount; i++) {
             const wrapper = document.createElement('div');

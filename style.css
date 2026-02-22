@@ -2785,6 +2785,62 @@ body::before {
     }
 }
 
+/* ---- ANDROID PERFORMANCE OPTIMIZATIONS ---- */
+/* Only applied when JS detects Android and adds .android class to body */
+body.android,
+body.android .nav-toggle,
+body.android a,
+body.android button {
+    cursor: auto !important;
+}
+
+body.android .bug-cursor {
+    display: none !important;
+}
+
+body.android .glitch-text::before,
+body.android .glitch-text::after {
+    animation: none !important;
+    display: none;
+}
+
+body.android .name-line.accent {
+    animation: none !important;
+}
+
+body.android .hero-section::before {
+    animation: none !important;
+}
+
+body.android .section-line::after {
+    animation: none !important;
+}
+
+body.android #navbar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.95);
+}
+
+body.android .bounty-marquee {
+    animation-duration: 60s;
+}
+
+body.android .project-card-glow,
+body.android .cert-glow {
+    display: none;
+}
+
+body.android .project-card,
+body.android .cert-card {
+    transform: none !important;
+}
+
+body.android .section:nth-child(even)::before,
+body.android .section:nth-child(odd)::before {
+    display: none;
+}
+
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
 
