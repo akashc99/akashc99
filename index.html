@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akash C | Cybersecurity Professional & Bug Bounty Hunter</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description"
+        content="Akash C — Team Lead Security Testing, Offensive Security Specialist, Bug Bounty Hunter. OSCP • OSWE • OSWA • CRTP • CTMP • CDP certified. CVE holder, HackerOne Top 300, and 30+ bounty rewards.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Animated background canvas -->
+    <canvas id="matrix-bg"></canvas>
+
+    <!-- Custom bug cursor -->
+    <div class="bug-cursor" id="bug-cursor">
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left wing -->
+            <ellipse class="bug-wing bug-wing-left" cx="12" cy="16" rx="10" ry="6" fill="rgba(230,57,70,0.25)"
+                stroke="#e63946" stroke-width="0.5" transform="rotate(-20 12 16)" />
+            <!-- Right wing -->
+            <ellipse class="bug-wing bug-wing-right" cx="28" cy="16" rx="10" ry="6" fill="rgba(230,57,70,0.25)"
+                stroke="#e63946" stroke-width="0.5" transform="rotate(20 28 16)" />
+            <!-- Body -->
+            <ellipse cx="20" cy="22" rx="5" ry="8" fill="#e63946" />
+            <!-- Head -->
+            <circle cx="20" cy="13" r="3.5" fill="#e63946" />
+            <!-- Eyes -->
+            <circle cx="18.5" cy="12" r="1" fill="#000" />
+            <circle cx="21.5" cy="12" r="1" fill="#000" />
+            <!-- Antennae -->
+            <line x1="18" y1="10" x2="14" y2="5" stroke="#e63946" stroke-width="0.8" stroke-linecap="round" />
+            <line x1="22" y1="10" x2="26" y2="5" stroke="#e63946" stroke-width="0.8" stroke-linecap="round" />
+            <circle cx="14" cy="5" r="1" fill="#e63946" />
+            <circle cx="26" cy="5" r="1" fill="#e63946" />
+            <!-- Legs -->
+            <line x1="16" y1="20" x2="11" y2="23" stroke="#e63946" stroke-width="0.7" />
+            <line x1="16" y1="24" x2="11" y2="27" stroke="#e63946" stroke-width="0.7" />
+            <line x1="24" y1="20" x2="29" y2="23" stroke="#e63946" stroke-width="0.7" />
+            <line x1="24" y1="24" x2="29" y2="27" stroke="#e63946" stroke-width="0.7" />
+        </svg>
+    </div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-terminal">
+            <div class="loader-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="loader-title">initializing...</span>
+            </div>
+            <div class="loader-body">
+                <p class="loader-line" data-delay="0"><span class="prompt">$</span> loading_portfolio --user akash_c</p>
+                <p class="loader-line" data-delay="400"><span class="prompt">$</span> decrypting_credentials... <span
+                        class="success">✓</span></p>
+                <p class="loader-line" data-delay="800"><span class="prompt">$</span> establishing_secure_connection...
+                    <span class="success">✓</span>
+                </p>
+                <p class="loader-line" data-delay="1200"><span class="prompt">$</span> loading_exploits_database...
+                    <span class="success">✓</span>
+                </p>
+                <p class="loader-line" data-delay="1600"><span class="prompt">$</span> access_granted <span
+                        class="blink">█</span></p>
+            </div>
+            <div class="loader-progress">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-bracket">{</span>
+                <span class="logo-text">AC</span>
+                <span class="logo-bracket">}</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link active" data-section="hero"><span class="nav-num">01.</span>Home</a>
+                </li>
+                <li><a href="#about" class="nav-link" data-section="about"><span class="nav-num">02.</span>About</a>
+                </li>
+                <li><a href="#experience" class="nav-link" data-section="experience"><span
+                            class="nav-num">03.</span>Experience</a></li>
+                <li><a href="#projects" class="nav-link" data-section="projects"><span
+                            class="nav-num">04.</span>Arsenal</a></li>
+                <li><a href="#bounties" class="nav-link" data-section="bounties"><span
+                            class="nav-num">05.</span>Bounties</a></li>
+                <li><a href="#conferences" class="nav-link" data-section="conferences"><span
+                            class="nav-num">06.</span>Conferences</a></li>
+                <li><a href="#certifications" class="nav-link" data-section="certifications"><span
+                            class="nav-num">07.</span>Certs</a></li>
+                <li><a href="#contact" class="nav-link" data-section="contact"><span
+                            class="nav-num">08.</span>Contact</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <ul class="mobile-links">
+            <li><a href="#hero" class="mobile-link"><span class="nav-num">01.</span>Home</a></li>
+            <li><a href="#about" class="mobile-link"><span class="nav-num">02.</span>About</a></li>
+            <li><a href="#experience" class="mobile-link"><span class="nav-num">03.</span>Experience</a></li>
+            <li><a href="#projects" class="mobile-link"><span class="nav-num">04.</span>Arsenal</a></li>
+            <li><a href="#bounties" class="mobile-link"><span class="nav-num">05.</span>Bounties</a></li>
+            <li><a href="#conferences" class="mobile-link"><span class="nav-num">06.</span>Conferences</a></li>
+            <li><a href="#certifications" class="mobile-link"><span class="nav-num">07.</span>Certs</a></li>
+            <li><a href="#contact" class="mobile-link"><span class="nav-num">08.</span>Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="section hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="hero-greeting glitch-text" data-text="Hello World, I'm">Hello World, I'm</p>
+                <h1 class="hero-name">
+                    <span class="name-line">Akash</span>
+                    <span class="name-line accent">Chatoth</span>
+                </h1>
+                <div class="hero-title-wrapper">
+                    <span class="hero-title-prefix">&gt;&gt;&gt;</span>
+                    <div class="typewriter-container">
+                        <span id="typewriter" class="hero-title"></span>
+                        <span class="typewriter-cursor">|</span>
+                    </div>
+                </div>
+                <p class="hero-description">
+                    Offensive security specialist with 9+ years of expertise in penetration testing, DevSecOps, threat
+                    modeling, and source code review.
+                    From publishing <span class="highlight">CVEs</span> to earning <span class="highlight">30+ bug
+                        bounties</span>
+                    and ranking <span class="highlight">#1 in Yelp's 2022 program</span> — I turn vulnerabilities into
+                    victories.
+                </p>
+                <div class="hero-cta">
+                    <a href="#projects" class="btn btn-primary">
+                        <span class="btn-icon">⚡</span>
+                        <span>View Arsenal</span>
+                    </a>
+                    <a href="#contact" class="btn btn-outline">
+                        <span class="btn-icon">📡</span>
+                        <span>Get In Touch</span>
+                    </a>
+                </div>
+                <div class="hero-social">
+                    <a href="https://github.com/akashc99" target="_blank" rel="noopener" class="social-link"
+                        aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/akash-c-1348b2136/" target="_blank" rel="noopener"
+                        class="social-link" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                    </a>
+                    <a href="https://hackerone.com/akashc99" target="_blank" rel="noopener" class="social-link"
+                        aria-label="HackerOne">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                            <path
+                                d="M4.268 6.321L8.533 4.19v15.62l-4.265 2.13V6.32zM11.2 1.86l-4.264 2.13v15.62l4.264-2.131V1.86zM15.466 19.81l4.265-2.13V2.06l-4.265 2.132v15.62z" />
+                        </svg>
+                    </a>
+                    <a href="https://akashc99.medium.com/" target="_blank" rel="noopener" class="social-link"
+                        aria-label="Medium">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                            <path
+                                d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item" data-count="30">
+                        <span class="stat-number">0</span>
+                        <span class="stat-plus">+</span>
+                        <span class="stat-label">Bug Bounties</span>
+                    </div>
+                    <div class="stat-item" data-count="1">
+                        <span class="stat-number">0</span>
+                        <span class="stat-plus"></span>
+                        <span class="stat-label">CVE Published</span>
+                    </div>
+                    <div class="stat-item" data-count="7">
+                        <span class="stat-number">0</span>
+                        <span class="stat-plus">+</span>
+                        <span class="stat-label">Certifications</span>
+                    </div>
+                    <div class="stat-item" data-count="3">
+                        <span class="stat-number">0</span>
+                        <span class="stat-plus"></span>
+                        <span class="stat-label">Security Tools</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div id="globe-container" class="globe-container"></div>
+                <div id="globe-tooltip" class="globe-tooltip"></div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>scroll down</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header section-header-with-art">
+                <div>
+                    <span class="section-tag">&lt;about&gt;</span>
+                    <h2 class="section-title reveal-text">Who Am I?</h2>
+                    <div class="section-line"></div>
+                </div>
+                <img src="about_art.png" alt="Hacker at terminal" class="section-art reveal-right">
+            </div>
+            <div class="about-grid">
+                <div class="about-terminal reveal-up">
+                    <div class="terminal-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="terminal-title">akash@kali:~$ whoami</span>
+                    </div>
+                    <div class="terminal-body">
+                        <p class="terminal-line"><span class="prompt">→</span> Offensive security professional with
+                            <span class="cmd">9+ years</span> of expertise in web, API, mobile, and infrastructure
+                            penetration testing, along with DevSecOps. Currently leading security testing initiatives at
+                            <span class="cmd">Allegion</span>.
+                        </p>
+                        <br>
+                        <p class="terminal-line"><span class="prompt">→</span> Certified in <span
+                                class="cmd">OSCP</span>, <span class="cmd">OSWE</span>, <span class="cmd">OSWA</span>,
+                            <span class="cmd">CRTP</span>, <span class="cmd">CTMP</span>, and <span
+                                class="cmd">CDP</span>. From discovering <span class="cmd">CVE-2021-27330</span> to
+                            building <span class="cmd">Interceptix</span> — I live at the intersection of hacking and
+                            engineering.
+                        </p>
+                        <br>
+                        <p class="terminal-line"><span class="prompt">→</span> Achieved <span class="cmd">#1
+                                position</span> in Yelp's 2022 bug bounty program. <span class="cmd">30+ bug
+                                bounty</span> rewards from Intel, Yelp, Paytm, Deliveroo, Redbus, and ESET. Also
+                            experienced in defensive security, including secure coding practices and environment
+                            hardening.</p>
+                    </div>
+                </div>
+                <div class="about-skills reveal-up" style="--delay: 0.2s">
+                    <h3 class="skills-title">// skill_matrix</h3>
+                    <div class="skill-category">
+                        <h4 class="skill-cat-title">Offensive Security</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Penetration Testing</span>
+                            <span class="skill-tag">Web App Security</span>
+                            <span class="skill-tag">Network Security</span>
+                            <span class="skill-tag">Active Directory</span>
+                            <span class="skill-tag">Red Teaming</span>
+                            <span class="skill-tag">IoT Security</span>
+                            <span class="skill-tag">Mobile Security</span>
+                            <span class="skill-tag">Threat Modeling</span>
+                            <span class="skill-tag">Secure SDLC</span>
+                            <span class="skill-tag">DevSecOps</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h4 class="skill-cat-title">Tools & Techniques</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Burp Suite</span>
+                            <span class="skill-tag">Metasploit</span>
+                            <span class="skill-tag">Nmap</span>
+                            <span class="skill-tag">Wireshark</span>
+                            <span class="skill-tag">Kali Linux</span>
+                            <span class="skill-tag">Frida</span>
+                            <span class="skill-tag">Objection</span>
+                            <span class="skill-tag">Magisk</span>
+                            <span class="skill-tag">Wiz</span>
+                            <span class="skill-tag">MQTT Analysis</span>
+                            <span class="skill-tag">SSL/TLS Testing</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h4 class="skill-cat-title">Development</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Bash</span>
+                            <span class="skill-tag">C/C++</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">Flask</span>
+                            <span class="skill-tag">Arduino</span>
+                            <span class="skill-tag">Linux</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span class="section-tag closing">&lt;/about&gt;</span>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section">
+        <div class="container">
+            <div class="section-header section-header-with-art">
+                <div>
+                    <span class="section-tag">&lt;experience&gt;</span>
+                    <h2 class="section-title reveal-text">Mission Log</h2>
+                    <div class="section-line"></div>
+                </div>
+                <img src="experience_art.png" alt="Security shield" class="section-art reveal-right">
+            </div>
+            <div class="timeline">
+                <div class="timeline-item reveal-left">
+                    <div class="timeline-marker">
+                        <div class="marker-pulse"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-header-info">
+                            <span class="timeline-date">May 2023 - Present</span>
+                            <span class="timeline-status active">● Active</span>
+                        </div>
+                        <h3 class="timeline-title">Team Lead - Security Testing</h3>
+                        <p class="timeline-company">Allegion</p>
+                        <p class="timeline-desc">Leading security testing initiatives for IoT, web, mobile, watchOS
+                            apps, and APIs. Acting as security point of contact for cross-functional teams, validating
+                            Bug Bounty submissions via HackerOne, executing cloud security reviews on AWS and Azure, and
+                            implementing threat modeling. Mentoring junior team members and integrating security tools
+                            into Azure CI/CD pipelines.</p>
+                        <div class="timeline-tags">
+                            <span>Threat Modeling</span>
+                            <span>Penetration Testing</span>
+                            <span>DevSecOps</span>
+                            <span>Cloud Security</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal-right">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header-info">
+                            <span class="timeline-date">Jul 2021 - May 2023</span>
+                            <span class="timeline-status completed">● Completed</span>
+                        </div>
+                        <h3 class="timeline-title">Senior Cyber Security Professional</h3>
+                        <p class="timeline-company">Siemens India</p>
+                        <p class="timeline-desc">Performed penetration testing on Siemens products including web/mobile
+                            apps and APIs. Created custom bash and Python scripts for authenticated web application
+                            scanning using OWASP ZAP Docker. Integrated OWASP ZAP into GitLab CI/CD pipeline. Performed
+                            CIS benchmarks on AWS accounts using Nessus Pro and Prowler.</p>
+                        <div class="timeline-tags">
+                            <span>OWASP ZAP</span>
+                            <span>CI/CD Security</span>
+                            <span>CIS Benchmarks</span>
+                            <span>AWS Security</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal-left">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header-info">
+                            <span class="timeline-date">Jan 2019 - Jul 2021</span>
+                            <span class="timeline-status completed">● Completed</span>
+                        </div>
+                        <h3 class="timeline-title">Senior Security Analyst (Team Lead)</h3>
+                        <p class="timeline-company">Value Mentor</p>
+                        <p class="timeline-desc">Performed internal network security assessments, wireless penetration
+                            tests, and payment gateway security assessments. Conducted SAST & DAST on mobile
+                            applications (iOS & Android). Passed CERT-In VAPT practical certification. Mentored and
+                            trained a team of freshers in application security and designed Security CTF competitions.
+                        </p>
+                        <div class="timeline-tags">
+                            <span>Network Security</span>
+                            <span>Mobile Security</span>
+                            <span>CERT-In</span>
+                            <span>Team Leadership</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal-right">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header-info">
+                            <span class="timeline-date">Aug 2016 - Present</span>
+                            <span class="timeline-status active">● Ongoing</span>
+                        </div>
+                        <h3 class="timeline-title">Bug Bounty Hunter</h3>
+                        <p class="timeline-company">HackerOne / Bugcrowd / Independent</p>
+                        <p class="timeline-desc">First position in Yelp's 2022 bug bounty program on HackerOne.
+                            Discovered and responsibly disclosed 30+ vulnerabilities across Intel, Yelp, Paytm,
+                            Deliveroo, Redbus, ESET, and more. Published <a
+                                href="https://nvd.nist.gov/vuln/detail/CVE-2021-27330" target="_blank" rel="noopener"
+                                class="inline-link">CVE-2021-27330</a>.</p>
+                        <div class="timeline-tags">
+                            <span>Bug Bounty</span>
+                            <span>CVE</span>
+                            <span>Yelp #1 2022</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span class="section-tag closing">&lt;/experience&gt;</span>
+        </div>
+    </section>
+
+    <!-- Projects / Arsenal Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="section-header section-header-with-art">
+                <div>
+                    <span class="section-tag">&lt;arsenal&gt;</span>
+                    <h2 class="section-title reveal-text">The Arsenal</h2>
+                    <div class="section-line"></div>
+                </div>
+                <img src="lock_art.png" alt="Lock picking illustration" class="section-art reveal-right">
+            </div>
+            <div class="projects-grid">
+                <div class="project-card reveal-up" data-tilt>
+                    <div class="project-card-glow"></div>
+                    <div class="project-icon">🛡️</div>
+                    <div class="project-header">
+                        <h3 class="project-title">Interceptix</h3>
+                        <span class="project-badge">Featured</span>
+                    </div>
+                    <p class="project-desc">A comprehensive IoT security testing platform that creates a rogue WiFi
+                        access point to intercept, analyze, and test IoT device communications. Detects HTTP, HTTPS,
+                        MQTT, MQTTS traffic and identifies vulnerabilities in real-time.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Flask</span>
+                        <span>ESP32</span>
+                        <span>MQTT</span>
+                        <span>SSL/TLS</span>
+                        <span>Raspberry Pi</span>
+                    </div>
+                    <div class="project-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">◆</span>
+                            <span>WiFi AP + Man-in-the-Middle</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">◆</span>
+                            <span>Real-time Traffic Analysis</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">◆</span>
+                            <span>Certificate Validation Testing</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">◆</span>
+                            <span>Automated Report Generation</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/akashc99" class="project-link" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            <span>Source</span>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="project-card reveal-up" style="--delay: 0.15s" data-tilt>
+                    <div class="project-card-glow"></div>
+                    <div class="project-icon">🔓</div>
+                    <div class="project-header">
+                        <h3 class="project-title">CVE-2021-27330</h3>
+                        <span class="project-badge cve">CVE</span>
+                    </div>
+                    <p class="project-desc">Discovered and responsibly disclosed a security vulnerability assigned
+                        CVE-2021-27330. Published in the National Vulnerability Database (NVD), contributing to the
+                        global cybersecurity knowledge base.</p>
+                    <div class="project-tech">
+                        <span>Vulnerability Research</span>
+                        <span>CVE</span>
+                        <span>NVD</span>
+                        <span>Responsible Disclosure</span>
+                    </div>
+                    <div class="project-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">◆</span>
+                            <span>Published in NVD</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">◆</span>
+                            <span>Responsible Disclosure</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-27330" class="project-link" target="_blank"
+                            rel="noopener">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            <span>View on NVD</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card reveal-up" style="--delay: 0.3s" data-tilt>
+                    <div class="project-card-glow"></div>
+                    <div class="project-icon">🔧</div>
+                    <div class="project-header">
+                        <h3 class="project-title">JSON Escaper</h3>
+                        <span class="project-badge">Extension</span>
+                    </div>
+                    <p class="project-desc">A Burp Suite extension for escaping and unescaping JSON strings. Useful for
+                        testing APIs and handling special characters in JSON payloads during penetration testing
+                        engagements.</p>
+                    <div class="project-tech">
+                        <span>Burp Suite</span>
+                        <span>Java</span>
+                        <span>JSON</span>
+                        <span>API Testing</span>
+                    </div>
+                    <div class="project-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">◆</span>
+                            <span>JSON String Escaping</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">◆</span>
+                            <span>Burp Suite Integration</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/akashc99" class="project-link" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            <span>Source</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <span class="section-tag closing">&lt;/arsenal&gt;</span>
+        </div>
+    </section>
+
+    <!-- Bug Bounties Section -->
+    <section id="bounties" class="section">
+        <div class="container">
+            <div class="section-header section-header-with-art">
+                <div>
+                    <span class="section-tag">&lt;bounties&gt;</span>
+                    <h2 class="section-title reveal-text">Bug Bounty Hall of Fame</h2>
+                    <div class="section-line"></div>
+                </div>
+                <img src="bug_art.png" alt="Bug bounty illustration" class="section-art reveal-right">
+            </div>
+            <p class="bounty-intro reveal-up">Vulnerabilities discovered and responsibly disclosed across major
+                platforms and organizations. Each entry represents a confirmed security finding.</p>
+            <div class="bounty-marquee-container">
+                <div class="bounty-marquee" id="bounty-marquee">
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="6" y="10" width="28" height="20" rx="2" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M10 18h8M10 22h12M10 26h6" stroke="#e63946" stroke-width="1" opacity="0.6" />
+                                <circle cx="30" cy="16" r="3" stroke="#e63946" stroke-width="1" />
+                            </svg></div>
+                        <span class="bounty-name">Intel</span>
+                        <span class="bounty-count">Multiple</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="8" y="8" width="24" height="24" rx="4" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M14 20h12M20 14v12" stroke="#e63946" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                                <circle cx="20" cy="20" r="6" stroke="#e63946" stroke-width="1" opacity="0.4" />
+                            </svg></div>
+                        <span class="bounty-name">Paytm</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <polygon points="20,6 24,16 35,16 26,22 29,33 20,26 11,33 14,22 5,16 16,16"
+                                    stroke="#e63946" stroke-width="1.5" fill="rgba(230,57,70,0.15)" />
+                            </svg></div>
+                        <span class="bounty-name">Yelp</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <circle cx="20" cy="16" r="8" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M12 28c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#e63946" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                                <path d="M16 14l4 4 4-4" stroke="#e63946" stroke-width="1" opacity="0.6" />
+                            </svg></div>
+                        <span class="bounty-name">Deliveroo</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <circle cx="14" cy="30" r="3" stroke="#e63946" stroke-width="1.5" />
+                                <circle cx="28" cy="30" r="3" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M6 10h4l4 16h16l3-10H16" stroke="#e63946" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></div>
+                        <span class="bounty-name">Instacart</span>
+                        <span class="bounty-count">Multiple</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <path d="M20 6l14 10v14l-14 4-14-4V16L20 6z" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M20 14v8l6 3" stroke="#e63946" stroke-width="1.5" stroke-linecap="round" />
+                                <circle cx="20" cy="14" r="2" fill="#e63946" opacity="0.5" />
+                            </svg></div>
+                        <span class="bounty-name">ESET</span>
+                        <span class="bounty-count">Multiple</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="8" y="8" width="6" height="24" rx="1" fill="rgba(230,57,70,0.3)"
+                                    stroke="#e63946" stroke-width="1" />
+                                <rect x="17" y="14" width="6" height="18" rx="1" fill="rgba(230,57,70,0.3)"
+                                    stroke="#e63946" stroke-width="1" />
+                                <rect x="26" y="8" width="6" height="24" rx="1" fill="rgba(230,57,70,0.3)"
+                                    stroke="#e63946" stroke-width="1" />
+                            </svg></div>
+                        <span class="bounty-name">HackerOne</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <path d="M8 28L20 10l12 18H8z" stroke="#e63946" stroke-width="1.5"
+                                    stroke-linejoin="round" />
+                                <circle cx="20" cy="22" r="3" stroke="#e63946" stroke-width="1" opacity="0.6" />
+                            </svg></div>
+                        <span class="bounty-name">Goibibo</span>
+                        <span class="bounty-count">Multiple</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="6" y="14" width="28" height="14" rx="4" stroke="#e63946" stroke-width="1.5" />
+                                <circle cx="14" cy="32" r="3" stroke="#e63946" stroke-width="1.5" />
+                                <circle cx="26" cy="32" r="3" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M6 18h28" stroke="#e63946" stroke-width="1" opacity="0.4" />
+                            </svg></div>
+                        <span class="bounty-name">Redbus</span>
+                        <span class="bounty-count">Multiple</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="8" y="8" width="24" height="24" rx="2" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M8 14h24M14 8v24M20 8v24M26 8v24M8 20h24M8 26h24" stroke="#e63946"
+                                    stroke-width="0.5" opacity="0.4" />
+                            </svg></div>
+                        <span class="bounty-name">Airtable</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <path d="M10 10h20v4H10z" fill="rgba(230,57,70,0.2)" stroke="#e63946"
+                                    stroke-width="1" />
+                                <circle cx="20" cy="24" r="8" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M17 22l3 3 3-3" stroke="#e63946" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                        <span class="bounty-name">Udemy</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="6" y="10" width="28" height="20" rx="3" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M6 16l14 7 14-7" stroke="#e63946" stroke-width="1.5" />
+                            </svg></div>
+                        <span class="bounty-name">Open-Xchange</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <path d="M20 34c-8 0-12-6-12-14S16 6 20 6s12 6 12 14-4 14-12 14z" stroke="#e63946"
+                                    stroke-width="1.5" />
+                                <circle cx="20" cy="18" r="2" fill="#e63946" opacity="0.6" />
+                            </svg></div>
+                        <span class="bounty-name">Greenhouse</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <path d="M12 30V18c0-4.4 3.6-8 8-8s8 3.6 8 8v12" stroke="#e63946" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                                <path d="M8 30h24" stroke="#e63946" stroke-width="1.5" stroke-linecap="round" />
+                            </svg></div>
+                        <span class="bounty-name">PythonAnywhere</span>
+                        <span class="bounty-count">Multiple</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="10" y="10" width="20" height="20" rx="10" stroke="#e63946"
+                                    stroke-width="1.5" />
+                                <path d="M16 20h8M20 16v8" stroke="#e63946" stroke-width="1.5" stroke-linecap="round" />
+                            </svg></div>
+                        <span class="bounty-name">Zenmate VPN</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="8" y="12" width="24" height="16" rx="2" stroke="#e63946" stroke-width="1.5" />
+                                <path d="M12 16h6v4h-6z" stroke="#e63946" stroke-width="1" opacity="0.5" />
+                                <path d="M22 16h6M22 20h4" stroke="#e63946" stroke-width="1" opacity="0.4" />
+                            </svg></div>
+                        <span class="bounty-name">Visma</span>
+                        <span class="bounty-count">Rewarded</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <polygon points="20,6 24,16 35,16 26,22 29,33 20,26 11,33 14,22 5,16 16,16"
+                                    stroke="#e63946" stroke-width="1.5" fill="rgba(230,57,70,0.1)" />
+                                <circle cx="20" cy="20" r="4" stroke="#e63946" stroke-width="1" opacity="0.5" />
+                            </svg></div>
+                        <span class="bounty-name">Starleaf</span>
+                        <span class="bounty-count">Multiple</span>
+                    </div>
+                    <div class="bounty-item">
+                        <div class="bounty-icon"><svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                                <rect x="10" y="10" width="20" height="20" rx="4" stroke="#e63946" stroke-width="1.5" />
+                                <circle cx="20" cy="20" r="6" stroke="#e63946" stroke-width="1.5" />
+                                <circle cx="20" cy="20" r="2" fill="#e63946" opacity="0.4" />
+                            </svg></div>
+                        <span class="bounty-name">Appcelerator</span>
+                        <span class="bounty-count">Acknowledged</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bounty-achievements reveal-up">
+                <div class="achievement-item">
+                    <span class="achievement-icon">🥇</span>
+                    <div class="achievement-text">
+                        <strong>First Position</strong>
+                        <span>Yelp's 2022 Bug Bounty Program on HackerOne</span>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <span class="achievement-icon">🏛️</span>
+                    <div class="achievement-text">
+                        <strong>NCIIPC Acknowledgment</strong>
+                        <span>National Critical Information Infrastructure Protection Centre, India</span>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <span class="achievement-icon">🛡️</span>
+                    <div class="achievement-text">
+                        <strong>Intel & ESET Recognition</strong>
+                        <span>Security Researcher Acknowledgments</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bounty-note reveal-up">
+                <span class="note-icon">🔐</span>
+                <p>All findings were responsibly disclosed through official channels including HackerOne, Bugcrowd,
+                    and
+                    direct coordination with security teams.</p>
+            </div>
+            <span class="section-tag closing">&lt;/bounties&gt;</span>
+        </div>
+    </section>
+
+    <!-- Conferences Section -->
+    <section id="conferences" class="section">
+        <div class="container">
+            <div class="section-header section-header-with-art">
+                <div>
+                    <span class="section-tag">&lt;conferences&gt;</span>
+                    <h2 class="section-title reveal-text">Conference Trail</h2>
+                    <div class="section-line"></div>
+                </div>
+                <img src="conference_art.png" alt="Conference stage" class="section-art reveal-right">
+            </div>
+            <div class="conferences-grid">
+                <div class="conference-card reveal-up" style="--delay: 0s">
+                    <div class="conference-year">2025</div>
+                    <h3 class="conference-name">BlackHat Asia</h3>
+                    <p class="conference-location">Singapore</p>
+                </div>
+                <div class="conference-card reveal-up" style="--delay: 0.1s">
+                    <div class="conference-year">2024</div>
+                    <h3 class="conference-name">BlackHat Asia</h3>
+                    <p class="conference-location">Singapore</p>
+                </div>
+                <div class="conference-card reveal-up" style="--delay: 0.2s">
+                    <div class="conference-year">2024</div>
+                    <h3 class="conference-name">BSides</h3>
+                    <p class="conference-location">Bangalore</p>
+                </div>
+            </div>
+            <span class="section-tag closing">&lt;/conferences&gt;</span>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="section">
+        <div class="container">
+            <div class="section-header section-header-with-art">
+                <div>
+                    <span class="section-tag">&lt;certifications&gt;</span>
+                    <h2 class="section-title reveal-text">Credentials & Badges</h2>
+                    <div class="section-line"></div>
+                </div>
+                <img src="credentials_art.svg" alt="Security credentials" class="section-art reveal-right">
+            </div>
+            <div class="certs-grid">
+                <a href="https://www.credential.net/profile/akashc99" target="_blank" rel="noopener"
+                    class="cert-card reveal-up" data-tilt>
+                    <div class="cert-glow"></div>
+                    <div class="cert-badge">OSWE</div>
+                    <h3 class="cert-title">OffSec Web Expert</h3>
+                    <p class="cert-issuer">Offensive Security</p>
+                    <p class="cert-year">July 2025</p>
+                </a>
+                <a href="https://www.credential.net/profile/akashc99" target="_blank" rel="noopener"
+                    class="cert-card reveal-up" style="--delay: 0.1s" data-tilt>
+                    <div class="cert-glow"></div>
+                    <div class="cert-badge">OSCP</div>
+                    <h3 class="cert-title">OffSec Certified Professional</h3>
+                    <p class="cert-issuer">Offensive Security</p>
+                    <p class="cert-year">Dec 2020</p>
+                </a>
+                <a href="https://www.credential.net/profile/akashc99" target="_blank" rel="noopener"
+                    class="cert-card reveal-up" style="--delay: 0.2s" data-tilt>
+                    <div class="cert-glow"></div>
+                    <div class="cert-badge">OSWA</div>
+                    <h3 class="cert-title">OffSec Web Assessor</h3>
+                    <p class="cert-issuer">Offensive Security</p>
+                    <p class="cert-year">Nov 2025</p>
+                </a>
+                <a href="https://www.credential.net/profile/akashc99" target="_blank" rel="noopener"
+                    class="cert-card reveal-up" style="--delay: 0.3s" data-tilt>
+                    <div class="cert-glow"></div>
+                    <div class="cert-badge">CRTP</div>
+                    <h3 class="cert-title">Certified Red Team Professional</h3>
+                    <p class="cert-issuer">Altered Security</p>
+                    <p class="cert-year">Jan 2021</p>
+                </a>
+                <a href="https://www.credential.net/profile/akashc99" target="_blank" rel="noopener"
+                    class="cert-card reveal-up" style="--delay: 0.4s" data-tilt>
+                    <div class="cert-glow"></div>
+                    <div class="cert-badge">CDP</div>
+                    <h3 class="cert-title">Certified DevSecOps Professional</h3>
+                    <p class="cert-issuer">Practical DevSecOps</p>
+                    <p class="cert-year">June 2024</p>
+                </a>
+                <a href="https://www.credential.net/profile/akashc99" target="_blank" rel="noopener"
+                    class="cert-card reveal-up" style="--delay: 0.5s" data-tilt>
+                    <div class="cert-glow"></div>
+                    <div class="cert-badge">CTMP</div>
+                    <h3 class="cert-title">Certified Threat Modeling Professional</h3>
+                    <p class="cert-issuer">Practical DevSecOps</p>
+                    <p class="cert-year">Feb 2024</p>
+                </a>
+                <a href="https://app.hackthebox.com/profile/akashc99" target="_blank" rel="noopener"
+                    class="cert-card reveal-up" style="--delay: 0.6s" data-tilt>
+                    <div class="cert-glow"></div>
+                    <div class="cert-badge">HTB</div>
+                    <h3 class="cert-title">HackTheBox Rastalabs</h3>
+                    <p class="cert-issuer">HackTheBox</p>
+                    <p class="cert-year">Oct 2021</p>
+                </a>
+            </div>
+            <span class="section-tag closing">&lt;/certifications&gt;</span>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">&lt;contact&gt;</span>
+                <h2 class="section-title reveal-text">Establish Connection</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-terminal reveal-up">
+                    <div class="terminal-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="terminal-title">akash@kali:~$ ./connect.sh</span>
+                    </div>
+                    <div class="terminal-body contact-terminal-body">
+                        <p class="terminal-line"><span class="prompt">$</span> echo "Ready for new challenges"</p>
+                        <p class="terminal-line output">Ready for new challenges</p>
+                        <br>
+                        <p class="terminal-line"><span class="prompt">$</span> cat opportunities.txt</p>
+                        <p class="terminal-line output">Whether it's offensive security consulting, vulnerability
+                            research, penetration testing, or building security tools — I'm always up for interesting
+                            challenges.</p>
+                        <br>
+                        <p class="terminal-line"><span class="prompt">$</span> echo $CONTACT_INFO</p>
+                        <div class="contact-links-terminal">
+                            <a href="https://www.linkedin.com/in/akash-c-1348b2136/" target="_blank" rel="noopener"
+                                class="contact-link-item">
+                                <span class="link-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                        <path
+                                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                    </svg>
+                                </span>
+                                <span class="link-text">LinkedIn</span>
+                            </a>
+                            <a href="https://hackerone.com/akashc99" target="_blank" rel="noopener"
+                                class="contact-link-item">
+                                <span class="link-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                        <path
+                                            d="M4.268 6.321L8.533 4.19v15.62l-4.265 2.13V6.32zM11.2 1.86l-4.264 2.13v15.62l4.264-2.131V1.86zM15.466 19.81l4.265-2.13V2.06l-4.265 2.132v15.62z" />
+                                    </svg>
+                                </span>
+                                <span class="link-text">HackerOne</span>
+                            </a>
+                            <a href="https://github.com/akashc99" target="_blank" rel="noopener"
+                                class="contact-link-item">
+                                <span class="link-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                        <path
+                                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                    </svg>
+                                </span>
+                                <span class="link-text">GitHub</span>
+                            </a>
+                            <a href="https://akashc99.medium.com/" target="_blank" rel="noopener"
+                                class="contact-link-item">
+                                <span class="link-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                        <path
+                                            d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
+                                    </svg>
+                                </span>
+                                <span class="link-text">Medium</span>
+                            </a>
+                        </div>
+                        <br>
+                        <p class="terminal-line"><span class="prompt">$</span> <span class="blink">█</span></p>
+                    </div>
+                </div>
+            </div>
+            <span class="section-tag closing">&lt;/contact&gt;</span>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p class="footer-text">
+                <span class="footer-bracket">{</span>
+                Designed & Built by <strong>Akash C</strong>
+                <span class="footer-bracket">}</span>
+            </p>
+            <p class="footer-subtext">// Breaking things to make them stronger since 2016</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+    <script src="globe.js"></script>
+</body>
+
+</html>
